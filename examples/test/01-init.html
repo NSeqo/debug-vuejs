@@ -23,7 +23,7 @@
         Vue.component('el-button', {
             props:['name'],
             template:`
-                <button> {{name}} </button>
+                <button @click="$emit('click')"> {{name}} </button>
             `
         }) 
 
@@ -36,7 +36,7 @@
 
             methods:{
                 handleClick() {
-                    console.log('this'); //sy-log
+                    console.log(this); //sy-log
                 }
             }
         })
