@@ -3999,8 +3999,8 @@ function eventsMixin (Vue) {
       for (var i = 0, l = event.length; i < l; i++) {
         vm.$on(event[i], fn);
       }
-    } else {
-      (vm._events[event] || (vm._events[event] = [])).push(fn);
+    } else { 
+      (vm._events[event] || (vm._events[event] = [])).push(fn); //这种 逻辑或|| 写法返回值是真值
       // optimize hook:event cost by using a boolean flag marked at registration
       // instead of a hash lookup
       if (hookRE.test(event)) {

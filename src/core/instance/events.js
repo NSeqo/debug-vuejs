@@ -9,10 +9,12 @@ import {
 } from '../util/index'
 import { updateListeners } from '../vdom/helpers/index'
 
+// 组件上事件监听器粗处理
 export function initEvents (vm: Component) {
-  vm._events = Object.create(null)
+  vm._events = Object.create(null) 
   vm._hasHookEvent = false
   // init parent attached events
+  // 父组件中调用子组件时，给子组件上绑定的事件监听  <el-button @click="handleClick" name="确认"></el-button>
   const listeners = vm.$options._parentListeners
   if (listeners) {
     updateComponentListeners(vm, listeners)
@@ -21,6 +23,7 @@ export function initEvents (vm: Component) {
 
 let target: any
 
+// 事件监听器的 add, remove, once
 function add (event, fn) {
   target.$on(event, fn)
 }
@@ -44,6 +47,7 @@ export function updateComponentListeners (
   listeners: Object,
   oldListeners: ?Object
 ) {
+  //target是全局变量，每次处理完一个实例后就置空
   target = vm
   updateListeners(listeners, oldListeners || {}, add, remove, createOnceHandler, vm)
   target = undefined

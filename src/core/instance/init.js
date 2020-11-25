@@ -12,10 +12,12 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 
 let uid = 0
 
+// _init
 export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
+    // 每个Vue或其子类实例对象的唯一标识_uid
     vm._uid = uid++
 
     let startTag, endTag
@@ -41,6 +43,7 @@ export function initMixin (Vue: Class<Component>) {
         vm
       )
     }
+    console.log('vm',vm); //sy-log
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)

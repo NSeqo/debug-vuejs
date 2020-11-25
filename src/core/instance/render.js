@@ -15,10 +15,12 @@ import { normalizeScopedSlots } from '../vdom/helpers/normalize-scoped-slots'
 import VNode, { createEmptyVNode } from '../vdom/vnode'
 
 import { isUpdatingChildComponent } from './lifecycle'
-
+// initRender
 export function initRender (vm: Component) {
   vm._vnode = null // the root of the child tree
+  // v-once 绑定的组件只会在初次挂载挂载时数据渲染，之后数据变化，会被当做静态内容略过不会触发渲染
   vm._staticTrees = null // v-once cached trees
+
   const options = vm.$options
   const parentVnode = vm.$vnode = options._parentVnode // the placeholder node in parent tree
   const renderContext = parentVnode && parentVnode.context
@@ -28,13 +30,17 @@ export function initRender (vm: Component) {
   // so that we get proper render context inside it.
   // args order: tag, data, children, normalizationType, alwaysNormalize
   // internal version is used by render functions compiled from templates
+  // 内部函数_c
   vm._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
   // normalization is always applied for the public version, used in
   // user-written render functions.
+
+  // 对外公开的api
   vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
 
   // $attrs & $listeners are exposed for easier HOC creation.
   // they need to be reactive so that HOCs using them are always updated
+  // 这个parentVode在组件中其实即使自身的实例对应的根标签, data对象包含属性attrs,组件使用时所有的属性
   const parentData = parentVnode && parentVnode.data
 
   /* istanbul ignore else */
@@ -48,7 +54,7 @@ export function initRender (vm: Component) {
   } else {
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, null, true)
     defineReactive(vm, '$listeners', options._parentListeners || emptyObject, null, true)
-  }
+  } 
 }
 
 export let currentRenderingInstance: Component | null = null

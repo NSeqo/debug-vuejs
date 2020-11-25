@@ -29,10 +29,12 @@ export function setActiveInstance(vm: Component) {
   }
 }
 
+// 生命周期
 export function initLifecycle (vm: Component) {
   const options = vm.$options
 
   // locate first non-abstract parent
+  // 向上寻找父组件实例，将自己加入到父组件的$children数组中， 建立父子之间的关系
   let parent = options.parent
   if (parent && !options.abstract) {
     while (parent.$options.abstract && parent.$parent) {
@@ -41,9 +43,11 @@ export function initLifecycle (vm: Component) {
     parent.$children.push(vm)
   }
 
+  // 父组件，根组件引用
   vm.$parent = parent
   vm.$root = parent ? parent.$root : vm
 
+  // 子组件
   vm.$children = []
   vm.$refs = {}
 
