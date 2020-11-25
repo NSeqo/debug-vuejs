@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vue源码剖析</title>
+    <script src="../../dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="demo">
+        <h1>初始化流程</h1>
+        <p>{{foo}}</p>
+        
+        <el-button @click="handleClick" name="确认"></el-button>
+
+    </div>
+    <script>
+        // render > template > el
+
+        // 创建实例
+
+        // 创建组件
+        Vue.component('el-button', {
+            props:['name'],
+            template:`
+                <button> {{name}} </button>
+            `
+        }) 
+
+        const app = new Vue({
+            el: '#demo',
+            // template: '<div>template</div>',
+            // template: '#app',
+            // render(h){return h('div','render')},
+            data:{foo:'foo'},
+
+            methods:{
+                handleClick() {
+                    console.log('this'); //sy-log
+                }
+            }
+        })
+        // console.log(app.$options.render);
+        
+
+        // main.js
+        // new Vue({
+        //     render(h) {
+        //         return h(App)
+        //     }
+        // }).$mount('#app')
+
+    </script>
+</body>
+</html>
