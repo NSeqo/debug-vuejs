@@ -15,8 +15,11 @@ export function initProvide (vm: Component) {
 
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
+  console.log('result', result); //sy-log  {color: "blue"}
   if (result) {
-    toggleObserving(false)
+
+    toggleObserving(false) // 关闭
+
     Object.keys(result).forEach(key => {
       /* istanbul ignore else */
       if (process.env.NODE_ENV !== 'production') {
@@ -32,7 +35,8 @@ export function initInjections (vm: Component) {
         defineReactive(vm, key, result[key])
       }
     })
-    toggleObserving(true)
+
+    toggleObserving(true) // 开启
   }
 }
 

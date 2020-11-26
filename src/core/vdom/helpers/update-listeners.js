@@ -63,7 +63,7 @@ export function updateListeners (
     def = cur = on[name]
     old = oldOn[name]
     event = normalizeEvent(name)
-    console.log('event', event); //sy-log  {name: "click", once: false, capture: false, passive: false}
+    // console.log('event', event); //sy-log  {name: "click", once: false, capture: false, passive: false}
     
     /* istanbul ignore if */
     if (__WEEX__ && isPlainObject(def)) {

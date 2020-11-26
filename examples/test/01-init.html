@@ -21,8 +21,9 @@
       // 创建组件 实例化后 VueComponet ，继承自Vue
       Vue.component("el-button", {
         props: ["name"],
+        inject: ["color"],
         template: `
-                <button @click="$emit('click')">
+                <button @click="$emit('click')" :style="{color:color}">
                     
                     <slot v-if="$slots.default"></slot>
                     <span v-else>{{name}}</span>
@@ -38,6 +39,10 @@
         // render(h){return h('div','render')},
         data: { foo: "foo" },
 
+        provide: {
+          color: "blue",
+        },
+
         methods: {
           handleClick() {
             console.log(this); //sy-log
@@ -52,8 +57,7 @@
       //         return h(App)
       //     }
       // }).$mount('#app')
-        // render > template > el
-
+      // render > template > el
     </script>
   </body>
 </html>
