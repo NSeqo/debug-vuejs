@@ -43,7 +43,8 @@ export function initMixin (Vue: Class<Component>) {
         vm
       )
     }
-    console.log('vm',vm); //sy-log
+
+    console.log(vm, vm.$options);
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)

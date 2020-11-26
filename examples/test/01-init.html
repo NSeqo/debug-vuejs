@@ -22,7 +22,7 @@
       Vue.component("el-button", {
         props: ["name"],
         template: `
-                <button>
+                <button @click="$emit('click')">
                     
                     <slot v-if="$slots.default"></slot>
                     <span v-else>{{name}}</span>
@@ -40,7 +40,7 @@
 
         methods: {
           handleClick() {
-            console.log("this"); //sy-log
+            console.log(this); //sy-log
           },
         },
       });
@@ -52,6 +52,8 @@
       //         return h(App)
       //     }
       // }).$mount('#app')
+        // render > template > el
+
     </script>
   </body>
 </html>

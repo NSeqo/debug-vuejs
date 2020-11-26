@@ -44,6 +44,7 @@ Vue.prototype.$mount = function (
 
 // devtools global hook
 /* istanbul ignore next */
+/*
 if (inBrowser) {
   setTimeout(() => {
     if (config.devtools) {
@@ -72,5 +73,7 @@ if (inBrowser) {
     }
   }, 0)
 }
+
+*/
 
 export default Vue
