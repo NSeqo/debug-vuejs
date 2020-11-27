@@ -15,7 +15,6 @@ export function initProvide (vm: Component) {
 
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
-  console.log('result', result); //sy-log  {color: "blue"}
   if (result) {
 
     toggleObserving(false) // 关闭

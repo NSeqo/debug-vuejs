@@ -45,7 +45,9 @@ export function proxy (target: Object, sourceKey: string, key: string) {
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
+// initState
 export function initState (vm: Component) {
+  // 处理数据相关的，包括 props methods data, computed, watch
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)

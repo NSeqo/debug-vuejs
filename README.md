@@ -17,7 +17,9 @@ new Vue(options)
 
     ==> initEvents   收集监听器函数 _events
 
-    ==> initRender
+    ==> initRender    
+
+    ==> 
 
 ```
 
