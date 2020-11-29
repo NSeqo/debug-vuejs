@@ -66,6 +66,7 @@ export function initRender (vm: Component) {
       !isUpdatingChildComponent && warn(`$listeners is readonly.`, vm)
     }, true)
   } else {
+    // 这里都是浅层 做响应式，嵌套的对象不递归处理
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, null, true)
     defineReactive(vm, '$listeners', options._parentListeners || emptyObject, null, true)
   } 

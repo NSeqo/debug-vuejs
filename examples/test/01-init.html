@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Vue源码剖析</title>
-    <script src="../../dist/vue.js"></script>
-  </head>
 
-  <body>
-    <div id="demo">
-      <h1>初始化流程</h1>
-      <p>{{foo}}</p>
-      <el-button @click="handleClick" data-x="zhangs" :name="foo" title="btn">
-        <span>{{foo}}</span><span>取消</span>
-        <template v-slot:icon>
-          <span>这里是icon</span>
-        </template>
-      </el-button>
-    </div>
-    <script>
-      // render > template > el
+<head>
+  <title>Vue源码剖析</title>
+  <script src="../../dist/vue.js"></script>
+</head>
 
-      // 创建实例
+<body>
+  <div id="demo">
+    <h1>初始化流程</h1>
+    <p>{{foo}}</p>
+    <el-button @click="handleClick" data-x="zhangs" :name="foo" title="btn">
+      <span>{{foo}}</span><span>取消</span>
+      <template v-slot:icon>
+        <span>这里是icon</span>
+      </template>
+    </el-button>
+  </div>
+  <script>
+    // render > template > el
 
-      // 创建组件 实例化后 VueComponet ，继承自Vue
-      Vue.component("el-button", {
-        props: ["name"],
-        inject: ["color"],
-        template: `
+    // 创建实例
+
+    // 创建组件 实例化后 VueComponet ，继承自Vue
+    Vue.component("el-button", {
+      props: ["name"],
+      inject: ["color"],
+      template: `
                 <button @click="$emit('click')" :style="{color:color}">
 
                     <slot name="icon"></slot>
@@ -35,25 +36,29 @@
                     
                 </button>
             `,
-      });
 
-      const app = new Vue({
-        el: "#demo",
-        // template: '<div>template</div>',
-        // template: '#app',
-        // render(h){return h('div','render')},
-        data: { foo: "foo按钮" },
+      beforeCreate() {
+        console.log('beforeCreate')
+      },
+    });
 
-        provide: {
-          color: "blue",
+    const app = new Vue({
+      el: "#demo",
+      // template: '<div>template</div>',
+      // template: '#app',
+      // render(h){return h('div','render')},
+      data: { foo: "foo按钮" },
+
+      provide: {
+        color: "blue",
+      },
+
+      methods: {
+        handleClick() {
+          console.log(this); //sy-log
         },
-
-        methods: {
-          handleClick() {
-            console.log(this); //sy-log
-          },
-        },
-      });
+      },
+    });
       // console.log(app.$options.render);
 
       // main.js
@@ -63,6 +68,7 @@
       //     }
       // }).$mount('#app')
       // render > template > el
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>

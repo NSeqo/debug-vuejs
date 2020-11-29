@@ -12,7 +12,7 @@ export function initProvide (vm: Component) {
       : provide
   }
 }
-
+// initInjections
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
   if (result) {
