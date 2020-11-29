@@ -48,9 +48,10 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 // initState
 export function initState (vm: Component) {
   // 处理数据相关的，包括 props methods data, computed, watch
+  // watchers , 一般一个组件对应一个watcher实例对象
   vm._watchers = []
   const opts = vm.$options
-  if (opts.props) initProps(vm, opts.props)
+  if (opts.props) initProps(vm, opts.props) // $options.props 是组件定义的时候，配置对象props所配置的
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
     initData(vm)
@@ -69,11 +70,12 @@ function initProps (vm: Component, propsOptions: Object) {
   // cache prop keys so that future props updates can iterate using Array
   // instead of dynamic object key enumeration.
   const keys = vm.$options._propKeys = []
-  const isRoot = !vm.$parent
+  const isRoot = !vm.$parent // 判断是不是根vue实例对象，对应就是 div#app
   // root instance props should be converted
   if (!isRoot) {
     toggleObserving(false)
   }
+  // propsOptions 是组件定义的时候配置的props
   for (const key in propsOptions) {
     keys.push(key)
     const value = validateProp(key, propsOptions, propsData, vm)
