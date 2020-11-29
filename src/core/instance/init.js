@@ -54,7 +54,7 @@ export function initMixin (Vue: Class<Component>) {
     // expose real self
     vm._self = vm
     initLifecycle(vm) // $parent, $children, $refs
-    initEvents(vm)
+    initEvents(vm) // vm._events[event] = [], 把组件调用时绑定的是事件处理函数处理，存入_events中
     initRender(vm)
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props

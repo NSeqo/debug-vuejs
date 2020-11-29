@@ -9,8 +9,11 @@
     <div id="demo">
       <h1>初始化流程</h1>
       <p>{{foo}}</p>
-      <el-button @click="handleClick" data-x="zhangs" :name="foo">
-        <span>确定</span>
+      <el-button @click="handleClick" data-x="zhangs" :name="foo" title="btn">
+        <span>{{foo}}</span><span>取消</span>
+        <template v-slot:icon>
+          <span>这里是icon</span>
+        </template>
       </el-button>
     </div>
     <script>
@@ -24,9 +27,11 @@
         inject: ["color"],
         template: `
                 <button @click="$emit('click')" :style="{color:color}">
+
+                    <slot name="icon"></slot>
                     
-                    <slot v-if="$slots.default"></slot>
-                    <span v-else>{{name}}</span>
+                    <slot></slot>
+                    <span>{{name}}</span>
                     
                 </button>
             `,
@@ -37,7 +42,7 @@
         // template: '<div>template</div>',
         // template: '#app',
         // render(h){return h('div','render')},
-        data: { foo: "foo" },
+        data: { foo: "foo按钮" },
 
         provide: {
           color: "blue",

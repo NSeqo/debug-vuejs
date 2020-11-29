@@ -17,6 +17,7 @@ import VNode, { createEmptyVNode } from '../vdom/vnode'
 import { isUpdatingChildComponent } from './lifecycle'
 // initRender
 export function initRender (vm: Component) {
+  // 子组件的根标签
   vm._vnode = null // the root of the child tree
   // v-once 绑定的组件只会在初次挂载挂载时数据渲染，之后数据变化，会被当做静态内容略过不会触发渲染
   vm._staticTrees = null // v-once cached trees
@@ -24,7 +25,19 @@ export function initRender (vm: Component) {
   const options = vm.$options
   const parentVnode = vm.$vnode = options._parentVnode // the placeholder node in parent tree
   const renderContext = parentVnode && parentVnode.context
+  // $slots 就是指的是子组件在调用是，嵌套在它子一级的所有标签内容
+  /**
+   *  <el-form>
+   *      这里嵌套的所有标签内容都是slots
+   *  
+   *  </el-form>
+   */
+  // _renderChildren是一个数组, 仅仅保存是的是默认插槽的节点，具名的插槽不在这里维护
+
+  // 这里仅仅是处理 默认插槽的内容，具名插槽还没有处理
   vm.$slots = resolveSlots(options._renderChildren, renderContext)
+
+  // emptyObject  = Object.freeze({}) 冻结版本
   vm.$scopedSlots = emptyObject
   // bind the createElement fn to this instance
   // so that we get proper render context inside it.
@@ -41,6 +54,7 @@ export function initRender (vm: Component) {
   // $attrs & $listeners are exposed for easier HOC creation.
   // they need to be reactive so that HOCs using them are always updated
   // 这个parentVode在组件中其实即使自身的实例对应的根标签, data对象包含属性attrs,组件使用时所有的属性
+  // class,style,以及组件接受的props属性除外
   const parentData = parentVnode && parentVnode.data
 
   /* istanbul ignore else */

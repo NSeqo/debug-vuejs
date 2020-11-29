@@ -21,7 +21,8 @@ export function resolveSlots (
       delete data.attrs.slot
     }
     // named slots should only be respected if the vnode was rendered in the
-    // same context.
+    // same context. 具名插槽的 只有当渲染上下文环境是一样的时候才会考虑，具名插槽涉及到传值的问题，所以需要有上下文环境的判断
+    // 这里context其实就是vue实例对象
     if ((child.context === context || child.fnContext === context) &&
       data && data.slot != null
     ) {
