@@ -41,7 +41,7 @@ export class Observer {
   vmCount: number; // number of vms that have this object as root $data
 
   constructor(value: any) {
-    this.value = value 
+    this.value = value
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this) // object.defineProperty 添加对象的属性
@@ -114,13 +114,13 @@ export function observe(value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
     return
   }
-  
+
   let ob: Observer | void
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
     // shouldObserve 开关控制， Object.isExtensible 判断对象是否可以扩展，_isVue vue实例对象的标记属性
-    shouldObserve && !isServerRendering() && (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) &&!value._isVue
+    shouldObserve && !isServerRendering() && (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) && !value._isVue
   ) {
     // value 类型是一个对象
     ob = new Observer(value)
@@ -157,13 +157,13 @@ export function defineReactive(
   }
   // 这里执行了观察， 这里是递归操作了，如果val是对象类型，遍历属性调用 defineReactive
   // observe 返回值是 new Observer() 的实例对象 return new Observer()
-  let childOb = !shallow && observe(val) 
+  let childOb = !shallow && observe(val)
 
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter() {
-     
+
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
         dep.depend()
@@ -188,8 +188,10 @@ export function defineReactive(
       if (process.env.NODE_ENV !== 'production' && customSetter) {
         customSetter()
       }
+
       // #7981: for accessor properties without setter
-      if (getter &                                                                                                                                                                                                                                                                                                                                                                                                                                                                     & !setter) return
+      if (getter && !setter) return
+
       if (setter) {
         setter.call(obj, newVal)
       } else {
@@ -198,6 +200,7 @@ export function defineReactive(
       childOb = !shallow && observe(newVal) // 重新observe
       dep.notify()
     }
+
   })
 }
 

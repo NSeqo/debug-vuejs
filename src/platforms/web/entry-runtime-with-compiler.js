@@ -14,11 +14,13 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
+// $mount
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
+  // 获取dom对象
   el = el && query(el)
 
   /* istanbul ignore if */
@@ -31,6 +33,7 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  // 解析template /el 转为render 函数
   if (!options.render) {
     let template = options.template
     if (template) {
@@ -69,6 +72,7 @@ Vue.prototype.$mount = function (
         delimiters: options.delimiters,
         comments: options.comments
       }, this)
+      
       options.render = render
       options.staticRenderFns = staticRenderFns
 

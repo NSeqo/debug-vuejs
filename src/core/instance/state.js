@@ -69,11 +69,12 @@ function initProps (vm: Component, propsOptions: Object) {
   const props = vm._props = {}
   // cache prop keys so that future props updates can iterate using Array
   // instead of dynamic object key enumeration.
+  // 组件定义时的props
   const keys = vm.$options._propKeys = []
   const isRoot = !vm.$parent // 判断是不是根vue实例对象，对应就是 div#app
   // root instance props should be converted
   if (!isRoot) {
-    toggleObserving(false)
+    toggleObserving(false) // shouldObserve = false
   }
   // propsOptions 是组件定义的时候配置的props
   for (const key in propsOptions) {

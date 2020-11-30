@@ -4205,7 +4205,7 @@ function lifecycleMixin (Vue) {
     }
   };
 }
-
+// mountComponent
 function mountComponent (
   vm,
   el,
@@ -4273,7 +4273,9 @@ function mountComponent (
 
   // manually mounted instance, call mounted on self
   // mounted is called for render-created child components in its inserted hook
+  // 
   if (vm.$vnode == null) {
+    // console.log('vm.$vnode', vm.$vnode); //sy-log
     vm._isMounted = true;
     callHook(vm, 'mounted');
   }
