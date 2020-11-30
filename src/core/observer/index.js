@@ -107,25 +107,32 @@ function copyAugment(target: Object, src: Object, keys: Array<string>) {
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
+ * 对象类型的数据value，实例化一个observe对象，将其挂到value的__ob__属性上
  */
 export function observe(value: any, asRootData: ?boolean): Observer | void {
 
-  // 只对对象类型，排除vnode
+  // 只对 对象类型，排除vnode
   if (!isObject(value) || value instanceof VNode) {
     return
   }
 
   let ob: Observer | void
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+    // 当前对象上已经有__ob__属性，并且属性值为Observer的实例对象
     ob = value.__ob__
+
   } else if (
-    // shouldObserve 开关控制， Object.isExtensible 判断对象是否可以扩展，_isVue vue实例对象的标记属性
+    // shouldObserve 全局变量，控制开关
+    // shouldObserve 开关控制， Object.isExtensible 判断对象是否可以扩展，
+    // _isVue 表明该对象是vue或者子类的实例对象
     shouldObserve && !isServerRendering() && (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) && !value._isVue
   ) {
     // value 类型是一个对象
     ob = new Observer(value)
   }
   if (asRootData && ob) {
+    // asRootData 指的是否是组件的data选项的根对象，不是嵌套的对象
+    // console.log('asRootData', asRootData, ob);
     ob.vmCount++
   }
   return ob
@@ -142,19 +149,31 @@ export function defineReactive(
   customSetter?: ?Function,
   shallow?: boolean
 ) {
+  // 这里初始化了一个dep实例对象，对应就是一个对象的key都又一个dep实例对象，这个变量是必包
+  // 因为这个变量在get, set函数中被调用了，set,get是对外暴露的函数，这两个函数在执行的时候就会访问到
+  // dep变量，那么dep变量就不能被垃圾回收
   const dep = new Dep()
 
+  // 获取属性的描述符对象，包括属性 configurable, enumerable, get, set, writable, value
+  // configurable 为true时，表示该属性可以修改，删除
+  // set, get分别为函数，不设置时默认为undefined
   const property = Object.getOwnPropertyDescriptor(obj, key)
+
   if (property && property.configurable === false) {
+    // 该属性不可以修改，删除
     return
   }
 
   // cater for pre-defined getter/setters
+  // 这种情况是自定义的 set / get 的的情况
   const getter = property && property.get
   const setter = property && property.set
+
+  // 传参数就2个的情况下，obj,key
   if ((!getter || setter) && arguments.length === 2) {
-    val = obj[key]
+    val = obj[key] 
   }
+
   // 这里执行了观察， 这里是递归操作了，如果val是对象类型，遍历属性调用 defineReactive
   // observe 返回值是 new Observer() 的实例对象 return new Observer()
   let childOb = !shallow && observe(val)
@@ -163,12 +182,16 @@ export function defineReactive(
     enumerable: true,
     configurable: true,
     get: function reactiveGetter() {
-
       const value = getter ? getter.call(obj) : val
+      // Dep.target 是一个全局的变量, 是一个watcher实例对象，对应一个组件
       if (Dep.target) {
-        dep.depend()
+        // Dep.target.addDep(this)，这里就是收集依赖了，就是把当前这个dep加入到当前激活的watcher中
+        // watcher是在组件挂载的时候实例化的，这里同时也是把watcher添加到了dep的subs数组中，watcher是订阅者
+        // 这就建立的消息广播和订阅者的关系
+        dep.depend() 
+
         if (childOb) {
-          childOb.dep.depend()
+          childOb.dep.depend() // 如果是有嵌套对象的情况下，将其childOb(Observer的实例对象)的dep也添加到watcher中
           if (Array.isArray(value)) {
             dependArray(value)
           }
@@ -182,6 +205,7 @@ export function defineReactive(
       /* eslint-disable no-self-compare */
       // NaN !== NaN
       if (newVal === value || (newVal !== newVal && value !== value)) {
+        // 值没有发生改变
         return
       }
       /* eslint-enable no-self-compare */
@@ -197,7 +221,9 @@ export function defineReactive(
       } else {
         val = newVal
       }
+      // 对新的值，重新进行observe,如果是对象类型，还要进行递归调用defineReactive
       childOb = !shallow && observe(newVal) // 重新observe
+      // 值发生了改变，通知订阅者，订阅者是watcher实例对象
       dep.notify()
     }
 

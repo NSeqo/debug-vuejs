@@ -33,7 +33,8 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
-  // 解析template /el 转为render 函数
+  // 解析template /el 转为render 函数, 从逻辑上可以看出来，template/el 都是为了最终生成render函数，那么如果直接手工写
+  // render函数也是可以的，只不过render函数的可读性没有template那么直观
   if (!options.render) {
     let template = options.template
     if (template) {
