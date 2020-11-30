@@ -12,13 +12,15 @@ export function initProvide (vm: Component) {
       : provide
   }
 }
-
+// initInjections
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
-  console.log('result', result); //sy-log  {color: "blue"}
   if (result) {
 
-    toggleObserving(false) // 关闭
+
+     // 关闭 shouldObserve = false, observe方法中不会执行new Observer()
+    //  defineReactive方法中涉及到递归调用
+    toggleObserving(false)
 
     Object.keys(result).forEach(key => {
       /* istanbul ignore else */

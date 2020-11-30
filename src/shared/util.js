@@ -1,6 +1,8 @@
 /* @flow */
 
 // object.freeze({}) 返回这个对象的冻结，属性不能更改，不能添加，删除，只能只读
+// 这里是工具函数库
+
 export const emptyObject = Object.freeze({})
 
 // These helpers produce better VM code in JS engines due to their
@@ -48,6 +50,7 @@ export function isObject (obj: mixed): boolean %checks {
 /**
  * Get the raw type string of a value, e.g., [object Object].
  * // 拿到对象的原型
+ * 检测对象类型的 具体类型
  */
 const _toString = Object.prototype.toString
 
@@ -59,6 +62,7 @@ export function toRawType (value: any): string {
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
  *  判断是否是 普通的对象 {}                
+ * for plain JavaScript objects. 判断是否是普通的对象类型 {}， 或者原型是普通对象类型
  */
 export function isPlainObject (obj: any): boolean {
   return _toString.call(obj) === '[object Object]'
@@ -154,8 +158,11 @@ export function hasOwn (obj: Object | Array<*>, key: string): boolean {
 
 /**
  * Create a cached version of a pure function.
+ * // 纯函数的缓存版本, 纯函数就是参数不变的情况下，函数的返回值是稳定的确定的
+ *  涉及到 高阶函数 闭包， 可以这么说高阶函数一般都会用到闭包的知识
  */
 export function cached<F: Function> (fn: F): F {
+  //这里创建了一个没有原型的对象，是为了属性的不冲突，把它当作一个map来使用
   const cache = Object.create(null)
   return (function cachedFn (str: string) {
     const hit = cache[str]
@@ -164,15 +171,16 @@ export function cached<F: Function> (fn: F): F {
 }
 
 /**
- * Camelize a hyphen-delimited string.
- */
+ * Camelize a hyphen-delimited string. 
+ * 短横线 get-username 转为 小驼峰写法  getUsername
+ */ 
 const camelizeRE = /-(\w)/g
 export const camelize = cached((str: string): string => {
   return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '')
 })
 
 /**
- * Capitalize a string.
+ * Capitalize a string. // 首字母改为大写
  */
 export const capitalize = cached((str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1)
@@ -232,6 +240,8 @@ export function toArray (list: any, start?: number): Array<any> {
 
 /**
  * Mix properties into target object.
+ * 混入式继承，说白了就是吧源对象的属性遍历一边，然后拷贝到目标对象上，相同的属性可以忽略或者直接覆盖，这根据
+ * 策略来进行选择
  */
 export function extend (to: Object, _from: ?Object): Object {
   for (const key in _from) {

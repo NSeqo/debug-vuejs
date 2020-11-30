@@ -44,7 +44,7 @@ export function initMixin (Vue: Class<Component>) {
       )
     }
 
-    console.log(vm, vm.$options);
+    console.log(vm);
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
@@ -53,9 +53,9 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    initLifecycle(vm)
-    initEvents(vm)
-    initRender(vm)
+    initLifecycle(vm) // $parent, $children, $refs
+    initEvents(vm) // vm._events[event] = [], 把组件调用时绑定的是事件处理函数处理，存入_events中
+    initRender(vm)  // 
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props
     initState(vm)

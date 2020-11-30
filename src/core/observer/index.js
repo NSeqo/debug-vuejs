@@ -156,12 +156,14 @@ export function defineReactive(
     val = obj[key]
   }
   // 这里执行了观察， 这里是递归操作了，如果val是对象类型，遍历属性调用 defineReactive
+  // observe 返回值是 new Observer() 的实例对象 return new Observer()
   let childOb = !shallow && observe(val) 
 
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter() {
+     
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
         dep.depend()
@@ -175,8 +177,10 @@ export function defineReactive(
       return value
     },
     set: function reactiveSetter(newVal) {
+      // debugger
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
+      // NaN !== NaN
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return
       }

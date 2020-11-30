@@ -294,6 +294,7 @@ export function validateComponentName (name: string) {
 /**
  * Ensure all props option syntax are normalized into the
  * Object-based format.
+ *  写组件的时候，参数props 接受的值类型有数组，或者对象，源码这里统一处理为对象
  */
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props

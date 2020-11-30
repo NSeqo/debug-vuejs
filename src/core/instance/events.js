@@ -47,7 +47,7 @@ export function updateComponentListeners (
   listeners: Object,
   oldListeners: ?Object
 ) {
-  //target是全局变量，每次处理完一个实例后就置空
+  //target是全局变量，每次处理完一个vue实例后就置空
   target = vm
   updateListeners(listeners, oldListeners || {}, add, remove, createOnceHandler, vm)
   target = undefined
@@ -59,9 +59,10 @@ export function eventsMixin (Vue: Class<Component>) {
     const vm: Component = this
     if (Array.isArray(event)) {
       for (let i = 0, l = event.length; i < l; i++) {
-        vm.$on(event[i], fn)
+        vm.$on(event[i], fn) // 递归调用自己 $on
       }
     } else {
+      // 事件名为key,处理函数存入对应的数组中，注意这种写法 (a.xx || a.xx = []).push(), 可以减少不少代码量
       (vm._events[event] || (vm._events[event] = [])).push(fn)
       // optimize hook:event cost by using a boolean flag marked at registration
       // instead of a hash lookup
