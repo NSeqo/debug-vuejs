@@ -1,13 +1,16 @@
 /* @flow */
 
+// object.freeze({}) 返回这个对象的冻结，属性不能更改，不能添加，删除，只能只读
 export const emptyObject = Object.freeze({})
 
 // These helpers produce better VM code in JS engines due to their
 // explicitness and function inlining.
+// 判空
 export function isUndef (v: any): boolean %checks {
   return v === undefined || v === null
 }
 
+// 非空判端
 export function isDef (v: any): boolean %checks {
   return v !== undefined && v !== null
 }
@@ -21,7 +24,7 @@ export function isFalse (v: any): boolean %checks {
 }
 
 /**
- * Check if value is primitive.
+ * Check if value is primitive.判断变量是否是原生数据类型
  */
 export function isPrimitive (value: any): boolean %checks {
   return (
@@ -44,6 +47,7 @@ export function isObject (obj: mixed): boolean %checks {
 
 /**
  * Get the raw type string of a value, e.g., [object Object].
+ * // 拿到对象的原型
  */
 const _toString = Object.prototype.toString
 
@@ -54,6 +58,7 @@ export function toRawType (value: any): string {
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
+ *  判断是否是 普通的对象 {}                
  */
 export function isPlainObject (obj: any): boolean {
   return _toString.call(obj) === '[object Object]'

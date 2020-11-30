@@ -185,7 +185,7 @@ export function defineReactive(
         customSetter()
       }
       // #7981: for accessor properties without setter
-      if (getter && !setter) return
+      if (getter &                                                                                                                                                                                                                                                                                                                                                                                                                                                                     & !setter) return
       if (setter) {
         setter.call(obj, newVal)
       } else {
