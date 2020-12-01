@@ -45,11 +45,13 @@ export class Observer {
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this) // object.defineProperty 添加对象的属性
+    // 数组的响应式处理，改变数据的原型对象，原型对象里的方法已经做了处理，当数组调用方法的时候就会去找新的原型对象的方法
+    // 在方法进行组件更新操作，或者新的响应式观察
     if (Array.isArray(value)) {
       if (hasProto) {
-        protoAugment(value, arrayMethods)
+        protoAugment(value, arrayMethods) // 原型替换了 value.__proto__ = arrayMethods
       } else {
-        copyAugment(value, arrayMethods, arrayKeys)
+        copyAugment(value, arrayMethods, arrayKeys) // mixin混入arrayMethods的方法
       }
       this.observeArray(value)
     } else {
@@ -71,6 +73,7 @@ export class Observer {
 
   /**
    * Observe a list of Array items.
+   * 遍历对象，递归调用响应式原理
    */
   observeArray(items: Array<any>) {
     for (let i = 0, l = items.length; i < l; i++) {
@@ -191,7 +194,9 @@ export function defineReactive(
         dep.depend() 
 
         if (childOb) {
-          childOb.dep.depend() // 如果是有嵌套对象的情况下，将其childOb(Observer的实例对象)的dep也添加到watcher中
+          // 如果是有嵌套对象的情况下，将其childOb(Observer的实例对象)的dep也添加到watcher中
+          childOb.dep.depend() 
+          // 数组类型需要特殊处理
           if (Array.isArray(value)) {
             dependArray(value)
           }
