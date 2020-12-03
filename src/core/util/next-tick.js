@@ -7,6 +7,7 @@ import { isIE, isIOS, isNative } from './env'
 
 export let isUsingMicroTask = false
 
+// 全局变量，存储nextick函数的回调函数
 const callbacks = []
 let pending = false
 
@@ -86,6 +87,8 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
+  
+  // 包装cb函数，将其添加到callbacks数组中
   callbacks.push(() => {
     if (cb) {
       try {
@@ -97,10 +100,13 @@ export function nextTick (cb?: Function, ctx?: Object) {
       _resolve(ctx)
     }
   })
+
+  // pending, 全局变量，挂起状态
   if (!pending) {
     pending = true
-    timerFunc()
+    timerFunc(); // 这里是执行回调函数，是微任务，两次主任务进程之间的微任务必须得全部执行完毕
   }
+  
   // $flow-disable-line
   if (!cb && typeof Promise !== 'undefined') {
     return new Promise(resolve => {
