@@ -43,6 +43,7 @@ methodsToPatch.forEach(function (method) {
     }
     // 数组元素有插入操作，重新进行observe,执行响应式操作
     if (inserted) ob.observeArray(inserted)
+    
     // notify change
     ob.dep.notify()
     
