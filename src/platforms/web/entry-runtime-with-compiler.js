@@ -66,12 +66,14 @@ Vue.prototype.$mount = function (
         mark('compile')
       }
 
+      // compileToFunctions 
+      // 变异模板生成渲染函数render
       const { render, staticRenderFns } = compileToFunctions(template, {
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,
         shouldDecodeNewlinesForHref,
-        delimiters: options.delimiters,
-        comments: options.comments
+        delimiters: options.delimiters, // 这个是模板中插值表达式的的分隔符，默认是 ["{{", "}}"]
+        comments: options.comments   // 是否编译模板中的注释内容，默认是false
       }, this)
       
       options.render = render
