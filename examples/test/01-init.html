@@ -10,17 +10,29 @@
   <div id="demo">
     <h1>初始化流程</h1>
     <p>{{foo}}</p>
-    <!-- <el-button @click="handleClick" data-x="zhangs" :name="foo" title="btn">
+    <el-button @click="handleClick" data-x="zhangs" :name="foo" title="btn">
         <span>{{foo}}</span><span>取消</span>
         <template v-slot:icon>
           <span>这里是icon</span>
         </template>
-      </el-button> -->
+      </el-button>
   </div>
   <script>
     // render > template > el
 
     // 创建实例
+    const extendOptions = {
+      name:'aaa',
+      data(){
+        return {
+          a:1
+        }
+      }
+    }
+    const Ctor = Vue.extend(extendOptions)
+
+    const Ctor2 = Vue.extend(extendOptions)
+
 
     // 创建组件 实例化后 VueComponet ，继承自Vue
     Vue.component("el-button", {

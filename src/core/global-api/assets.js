@@ -10,6 +10,7 @@ export function initAssetRegisters (Vue: GlobalAPI) {
 
    // ASSET_TYPES     ['component','directive','filter']
    // 这里就是注册或者获取 三个全局方法 Vue.component, Vue.directive, Vue.filter
+   
   ASSET_TYPES.forEach(type => {
     Vue[type] = function (
       id: string,

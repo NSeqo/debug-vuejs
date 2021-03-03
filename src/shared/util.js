@@ -246,7 +246,7 @@ export function toArray (list: any, start?: number): Array<any> {
  */
 export function extend (to: Object, _from: ?Object): Object {
   for (const key in _from) {
-    to[key] = _from[key]
+    to[key] = _from[key] // 这里是直接将将from中覆盖掉to中的相同的key属性值
   }
   return to
 }

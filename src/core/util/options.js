@@ -83,6 +83,7 @@ export function mergeDataOrFn (
 ): ?Function {
   if (!vm) {
     // in a Vue.extend merge, both should be functions
+    // 这种情况是创建子类的时候
     if (!childVal) {
       return parentVal
     }
@@ -94,6 +95,7 @@ export function mergeDataOrFn (
     // merged result of both functions... no need to
     // check if parentVal is a function here because
     // it has to be a function to pass previous merges.
+    // 返回一个函数能将两者的data函数执行后的结果合并起来
     return function mergedDataFn () {
       return mergeData(
         typeof childVal === 'function' ? childVal.call(this, this) : childVal,
@@ -294,7 +296,7 @@ export function validateComponentName (name: string) {
 /**
  * Ensure all props option syntax are normalized into the
  * Object-based format.
- *  写组件的时候，参数props 接受的值类型有数组，或者对象，源码这里统一处理为对象
+ *  写组件的时候，参数props 接受的值类型有数组，或者对象，源码这里统一处理为对象形式方便后续处理
  */
 function normalizeProps (options: Object, vm: ?Component) {
   const props = options.props
@@ -332,6 +334,7 @@ function normalizeProps (options: Object, vm: ?Component) {
 
 /**
  * Normalize all injections into Object-based format
+ * //
  */
 function normalizeInject (options: Object, vm: ?Component) {
   const inject = options.inject
@@ -386,6 +389,7 @@ function assertObjectType (name: string, value: any, vm: ?Component) {
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.
  */
+// mergeOptions
 export function mergeOptions (
   parent: Object,
   child: Object,
@@ -407,6 +411,7 @@ export function mergeOptions (
   // but only if it is a raw options object that isn't
   // the result of another mergeOptions call.
   // Only merged options has the _base property.
+  // 合并后的options对象是带有_base这个内部使用的属性的
   if (!child._base) {
     if (child.extends) {
       parent = mergeOptions(parent, child.extends, vm)
@@ -429,7 +434,9 @@ export function mergeOptions (
     }
   }
   function mergeField (key) {
-    const strat = strats[key] || defaultStrat
+
+    // strats 是策略类，不同的key值对应不同的策略函数，下面有
+    const strat = strats[key] || defaultStrat // 默认策略是为子覆盖父
     options[key] = strat(parent[key], child[key], vm, key)
   }
   return options
