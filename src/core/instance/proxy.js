@@ -78,6 +78,7 @@ if (process.env.NODE_ENV !== 'production') {
   initProxy = function initProxy (vm) {
     if (hasProxy) {
       // determine which proxy handler to use
+      // _withStripped 这个参数是做啥用的？
       const options = vm.$options
       const handlers = options.render && options.render._withStripped
         ? getHandler

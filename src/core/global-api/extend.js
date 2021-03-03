@@ -1,5 +1,13 @@
 /* @flow */
 
+/*
+
+   基本上就是处理 extend的，Vue的继承方法，扩展子类
+   涉及到的就是原型链的继承方式来实现子类的扩展，这种方式是js中的语言特性，
+
+ */
+
+
 import { ASSET_TYPES } from 'shared/constants'
 import { defineComputed, proxy } from '../instance/state'
 import { extend, mergeOptions, validateComponentName } from '../util/index'

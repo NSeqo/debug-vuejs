@@ -50,7 +50,7 @@ export function isObject (obj: mixed): boolean %checks {
 /**
  * Get the raw type string of a value, e.g., [object Object].
  * // 拿到对象的原型
- * 检测对象类型的 具体类型
+ * 检测对象类型的 具体类型 _开头的变量一般用于定于内部的私有变量使用，不对外开放的，这是习俗约定
  */
 const _toString = Object.prototype.toString
 
@@ -61,7 +61,7 @@ export function toRawType (value: any): string {
 /**
  * Strict object type check. Only returns true
  * for plain JavaScript objects.
- *  判断是否是 普通的对象 {}                
+ *  判断是否是 普通的对象 通过 {} 或者 new Object() 其实就是原型链上层是否有Object             
  * for plain JavaScript objects. 判断是否是普通的对象类型 {}， 或者原型是普通对象类型
  */
 export function isPlainObject (obj: any): boolean {
@@ -150,6 +150,7 @@ export function remove (arr: Array<any>, item: any): Array<any> | void {
 
 /**
  * Check whether an object has the property.
+ * 检查对象上某个属性是否是自身的属性而不是来自原型链上
  */
 const hasOwnProperty = Object.prototype.hasOwnProperty
 export function hasOwn (obj: Object | Array<*>, key: string): boolean {

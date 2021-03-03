@@ -1,7 +1,7 @@
 /* @flow */
 
 import config from '../config'
-import { initProxy } from './proxy'
+import { initProxy } from './proxy' // 给vm实例设置proxy对象，拦截get has
 import { initState } from './state'
 import { initRender } from './render'
 import { initEvents } from './events'
@@ -10,11 +10,14 @@ import { initLifecycle, callHook } from './lifecycle'
 import { initProvide, initInjections } from './inject'
 import { extend, mergeOptions, formatComponentName } from '../util/index'
 
+
+// 这个uid 是自增，用来记vue实例对象的个数
 let uid = 0
 
 // _init
 export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {
+
     const vm: Component = this
     // a uid
     // 每个Vue或其子类实例对象的唯一标识_uid
@@ -30,13 +33,16 @@ export function initMixin (Vue: Class<Component>) {
 
     // a flag to avoid this being observed
     vm._isVue = true
-    // merge options
+
+    // merge options 合并options 
+    // 这个 options 是用户自定义配置参数
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
+      // 正常是走这个分支
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
