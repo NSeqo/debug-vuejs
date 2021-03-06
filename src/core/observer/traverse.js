@@ -10,6 +10,7 @@ const seenObjects = new Set()
  * Recursively traverse an object to evoke all converted
  * getters, so that every nested property inside the object
  * is collected as a "deep" dependency.
+ * 递归遍历一个对象所有的修改getter，这样每个嵌套的对象属性都被当做依赖收集起来(组件依赖数据，这个嵌套的属性都是数据)
  */
 export function traverse (val: any) {
   _traverse(val, seenObjects)

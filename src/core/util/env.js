@@ -55,6 +55,7 @@ export const isServerRendering = () => {
 export const devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
 /* istanbul ignore next */
+//  "function Set() { [native code] }" 原生的对象包括 Array等toString方法都是不显示内部细节的
 export function isNative (Ctor: any): boolean {
   return typeof Ctor === 'function' && /native code/.test(Ctor.toString())
 }
@@ -70,6 +71,7 @@ if (typeof Set !== 'undefined' && isNative(Set)) {
   _Set = Set
 } else {
   // a non-standard Set polyfill that only works with primitive keys.
+  // 自己实现的简单的set类型数据对象
   _Set = class Set implements SimpleSet {
     set: Object;
     constructor () {

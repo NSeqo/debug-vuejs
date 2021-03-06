@@ -111,6 +111,7 @@ export function toNumber (val: string): number | string {
 /**
  * Make a map and return a function for checking if a key
  * is in that map.
+ * 这个是一个工具函数，返回值是函数
  */
 export function makeMap (
   str: string,
@@ -133,6 +134,7 @@ export const isBuiltInTag = makeMap('slot,component', true)
 
 /**
  * Check if an attribute is a reserved attribute.
+ * vue 保留的标签属性 key ref slot slot-scope is
  */
 export const isReservedAttribute = makeMap('key,ref,slot,slot-scope,is')
 
@@ -243,6 +245,8 @@ export function toArray (list: any, start?: number): Array<any> {
  * Mix properties into target object.
  * 混入式继承，说白了就是吧源对象的属性遍历一边，然后拷贝到目标对象上，相同的属性可以忽略或者直接覆盖，这根据
  * 策略来进行选择
+ * 
+ * 混入式继承的方式，其实就是
  */
 export function extend (to: Object, _from: ?Object): Object {
   for (const key in _from) {

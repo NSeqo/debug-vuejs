@@ -188,10 +188,10 @@ function mergeAssets (
   vm?: Component,
   key: string
 ): Object {
-  const res = Object.create(parentVal || null)
+  const res = Object.create(parentVal || null) // Object.create(o) 就是以o为原型创建一个对象
   if (childVal) {
     process.env.NODE_ENV !== 'production' && assertObjectType(key, childVal, vm)
-    return extend(res, childVal)
+    return extend(res, childVal) // extend(to,from)
   } else {
     return res
   }
@@ -433,9 +433,9 @@ export function mergeOptions (
       mergeField(key)
     }
   }
-  function mergeField (key) {
 
-    // strats 是策略类，不同的key值对应不同的策略函数，下面有
+  function mergeField (key) {
+    // strats 是策略类，不同的key值对应不同的策略函数
     const strat = strats[key] || defaultStrat // 默认策略是为子覆盖父
     options[key] = strat(parent[key], child[key], vm, key)
   }
