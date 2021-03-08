@@ -35,10 +35,10 @@ const sharedPropertyDefinition = {
   set: noop
 }
 
-// 这个proxy是代理
+// 这个proxy是代理，对于vm中的data,props中的数据访问都做了这一层的代理访问
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
-    return this[sourceKey][key]
+    return this[sourceKey][key] // 这里的访问就会触发到数据的reactiveGetter方法，触发响应式的get函数，依赖收集
   }
   sharedPropertyDefinition.set = function proxySetter (val) {
     this[sourceKey][key] = val

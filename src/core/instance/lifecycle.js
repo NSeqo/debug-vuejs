@@ -51,7 +51,7 @@ export function initLifecycle (vm: Component) {
   vm.$children = []
   vm.$refs = {}
 
-  vm._watcher = null
+  vm._watcher = null  //_watcher 是关联该vue实例的的watcher对象，负责视图渲染更新
   vm._inactive = null
   vm._directInactive = false
   vm._isMounted = false
@@ -59,13 +59,16 @@ export function initLifecycle (vm: Component) {
   vm._isBeingDestroyed = false
 }
 
+
+// 组件更新方法
+// _update
 export function lifecycleMixin (Vue: Class<Component>) {
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
-    const prevVnode = vm._vnode
+    const prevVnode = vm._vnode // 上一次的vnode
     const restoreActiveInstance = setActiveInstance(vm)
-    vm._vnode = vnode
+    vm._vnode = vnode  // 此次的新生成的vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
@@ -73,6 +76,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
     } else {
       // updates
+      // __patch__ vnode做diff，生成dom
       vm.$el = vm.__patch__(prevVnode, vnode)
     }
     restoreActiveInstance()

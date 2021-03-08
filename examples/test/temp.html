@@ -12,15 +12,35 @@
     <h1> 临时测试 </h1>
     <div id="app">
         <p>{{name}}</p>
+        <el-button @click="handleClick">click</el-button>
     </div>
 
     <script>
+
+        // 组件全局注册
+        Vue.component('el-button', {
+            props:{
+                name:{
+                    type: String,
+                    default:'click'
+                }
+            },
+            template:`
+                <button @click="$emit('click', $event)"> {{name}}  </button>
+            `,
+            
+        })
 
         const vm = new Vue({
             el:'#app',
             data(){
                 return {
                     name:'zhangan'
+                }
+            },
+            methods:{
+                handleClick(e) {
+                    alert(e.target)
                 }
             }
         })

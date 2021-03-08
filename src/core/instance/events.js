@@ -9,7 +9,8 @@ import {
 } from '../util/index'
 import { updateListeners } from '../vdom/helpers/index'
 
-// 组件上事件监听器粗处理
+// 组件上事件监听器粗处理,这里是处理是加上组件根上事件，而不是组件模板内部的某个标签的事件
+// 这里把组件当做一个组件整体来看的
 export function initEvents (vm: Component) {
   vm._events = Object.create(null) 
   vm._hasHookEvent = false

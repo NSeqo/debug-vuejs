@@ -30,8 +30,8 @@ export default class Dep {
 
   depend () {
     if (Dep.target) {
-      // console.log('dep', this);
-      Dep.target.addDep(this)
+      // Dep.target是对应的watcher实例
+      Dep.target.addDep(this) // 这个this 是dep实例，每个响应式的数据都会对应一个dep实例
     }
   }
 

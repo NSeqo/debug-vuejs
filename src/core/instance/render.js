@@ -16,7 +16,7 @@ import VNode, { createEmptyVNode } from '../vdom/vnode'
 
 import { isUpdatingChildComponent } from './lifecycle'
 // initRender
-export function initRender (vm: Component) {
+export function initRender(vm: Component) {
   // 子组件的根标签
   vm._vnode = null // the root of the child tree
   // v-once 绑定的组件只会在初次挂载挂载时数据渲染，之后数据变化，会被当做静态内容略过不会触发渲染
@@ -69,17 +69,17 @@ export function initRender (vm: Component) {
     // 这里都是浅层 做响应式，嵌套的对象不递归处理
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, null, true)
     defineReactive(vm, '$listeners', options._parentListeners || emptyObject, null, true)
-  } 
+  }
 }
 
 export let currentRenderingInstance: Component | null = null
 
 // for testing only
-export function setCurrentRenderingInstance (vm: Component) {
+export function setCurrentRenderingInstance(vm: Component) {
   currentRenderingInstance = vm
 }
 
-export function renderMixin (Vue: Class<Component>) {
+export function renderMixin(Vue: Class<Component>) {
   // install runtime convenience helpers
   installRenderHelpers(Vue.prototype)
 
@@ -109,6 +109,9 @@ export function renderMixin (Vue: Class<Component>) {
       // There's no need to maintain a stack because all render fns are called
       // separately from one another. Nested component's render fns are called
       // when parent component is patched.
+      // 这里执行render函数，call方法调用，this绑定到vm._renderProxy, 传入参数vm.$createElement, 
+      // render函数的形式为 with(this){}, 这里所有的变量访问都指向了this ==> _renerProxy
+      // render: h=>h(app) // 
       currentRenderingInstance = vm
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {

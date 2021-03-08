@@ -27,13 +27,30 @@ export function initAssetRegisters (Vue: GlobalAPI) {
 
         // 组件注册
         if (type === 'component' && isPlainObject(definition)) {
+          //  this.options._base 指向的就是Vue本身,这里全局注册其实就是使用extend生成了一个子类
+          // 并且将生成子类加入到自身的基础options中,所谓的全局其实就是自身内部的compontents
+          /**
+           *  {
+           *    components:{
+           *        KeepAlive,
+           *        Transition,
+           *        TransitionGroup
+           *    },
+           *    directives:{
+           *        model,
+           *        show,
+           *    },
+           *    filters:{}
+           *  }
+           */
           definition.name = definition.name || id
-          definition = this.options._base.extend(definition) //  this.options._base 指向的就是Vue本身
+          definition = this.options._base.extend(definition) 
         }
         // 自定义指令
         if (type === 'directive' && typeof definition === 'function') {
           definition = { bind: definition, update: definition }
         }
+        
         
         this.options[type + 's'][id] = definition
         return definition

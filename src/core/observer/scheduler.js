@@ -67,9 +67,10 @@ if (inBrowser && !isIE) {
 
 /**
  * Flush both queues and run the watchers.
+ * // 刷新队列，执行组件的更新
  */
 function flushSchedulerQueue () {
-  currentFlushTimestamp = getNow()
+  currentFlushTimestamp = getNow() // 时间戳
   flushing = true
   let watcher, id
 
@@ -92,7 +93,7 @@ function flushSchedulerQueue () {
     }
     id = watcher.id
     has[id] = null
-    watcher.run()
+    watcher.run() // 核心方法
     // in dev build, check and stop circular updates.
     if (process.env.NODE_ENV !== 'production' && has[id] != null) {
       circular[id] = (circular[id] || 0) + 1

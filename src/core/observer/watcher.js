@@ -99,11 +99,11 @@ export default class Watcher {
    * Evaluate the getter, and re-collect dependencies.
    */
   get() {
-    pushTarget(this)
+    pushTarget(this) // this 指向的就是当前的watcher实例对象
     let value
     const vm = this.vm
     try {
-      value = this.getter.call(vm, vm)
+      value = this.getter.call(vm, vm) // 这里的getter函数就是updateComponet()
     } catch (e) {
       if (this.user) {
         handleError(e, vm, `getter for watcher "${this.expression}"`)
@@ -131,7 +131,7 @@ export default class Watcher {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
       if (!this.depIds.has(id)) {
-        dep.addSub(this)
+        dep.addSub(this) // 这里this 指的是Dep.target 也就是watcher实例
       }
     }
   }
@@ -169,6 +169,8 @@ export default class Watcher {
       this.run()
     } else {
       // 将该watcher加入到队列中，watcher对应是一个组件，负责组件的更新渲染
+      // 当某个响应式的数据变化时，该数据对应额dep对象中维护的watcher实例就被执行update方法
+      // 之后进入的就是更新调度的流程
       queueWatcher(this) // this 指的是当前的这个watcher实例
     }
   }
